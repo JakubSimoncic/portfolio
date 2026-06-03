@@ -21,36 +21,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 3. Chytré schovávání nav baru při výraznějším scrollu dolů
+// 3. Chytré schovávání nav baru při výraznějším scrollu dolů
     const navBar = document.getElementById('main-nav');
-    // OPRAVA REFRESHŮ: Hned při načtení načteme reálnou startovní pozici scrollu
     let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const tolerance = 60; // Výraznější tolerance pro plynulý pohyb (počet px)
+    
+    // Zvětšujeme toleranci na pořádný kus (80px jednoho souvislého pohybu)
+    const tolerance = 80; 
 
     if (navBar) {
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-            // 1. Když je uživatel blízko vršku stránky (do 150px), navigace zůstane VŽDY viditelná
-            if (currentScroll <= 150) {
+            // 1. Ochranná zóna nahoře - do 200px odshora se nav bar nikdy neschová
+            if (currentScroll <= 200) {
                 navBar.style.transform = "translateY(0)";
-                lastScrollTop = currentScroll; // Udržujeme aktuální pozici
+                lastScrollTop = currentScroll;
                 return;
             }
 
-            // 2. Ignorujeme malé pohyby, které nedosahují limitu tolerance
+            // 2. Pokud se hýbeš v rámci tolerance, kód nic nedělá
             if (Math.abs(lastScrollTop - currentScroll) <= tolerance) {
                 return;
             }
 
-            // 3. Pokud scrolluje dolů a mobilní menu NENÍ otevřené -> schovat nav bar
+            // 3. Schování / ukázání podle jasného směru
             if (currentScroll > lastScrollTop && (!navLinks || !navLinks.classList.contains('active'))) {
+                // Scrolluješ dolů -> schovat
                 navBar.style.transform = "translateY(-100%)";
-            } else {
-                // Pokud scrolluje nahoru -> nav bar ihned ukázat
+            } else if (currentScroll < lastScrollTop) {
+                // Jakýkoliv náznak scrollu nahoru -> okamžitě ukázat
                 navBar.style.transform = "translateY(0)";
             }
 
+            // Aktualizujeme pozici až PO překročení tolerance, což vytvoří ten správný tupý/necitlivý efekt
             lastScrollTop = currentScroll;
         });
     }
