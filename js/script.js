@@ -23,16 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Chytré schovávání nav baru při výraznějším scrollu dolů
     const navBar = document.getElementById('main-nav');
-    let lastScrollTop = 0;
-    const tolerance = 100; // O kolik pixelů musí uživatel popojet, aby nav bar reagoval
+    // OPRAVA REFRESHŮ: Hned při načtení načteme reálnou startovní pozici scrollu
+    let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const tolerance = 60; // Výraznější tolerance pro plynulý pohyb (počet px)
 
     if (navBar) {
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
-            // 1. Když je uživatel úplně nahoře, navigace zůstane stoprocentně viditelná
-            if (currentScroll <= 10) {
+            // 1. Když je uživatel blízko vršku stránky (do 150px), navigace zůstane VŽDY viditelná
+            if (currentScroll <= 150) {
                 navBar.style.transform = "translateY(0)";
+                lastScrollTop = currentScroll; // Udržujeme aktuální pozici
                 return;
             }
 
