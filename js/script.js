@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Chytré schovávání nav baru při výraznějším scrollu dolů
     const navBar = document.getElementById('main-nav');
     let lastScrollTop = 0;
-    const tolerance = 15; // O kolik pixelů musí uživatel popojet, aby nav bar reagoval
+    const tolerance = 100; // O kolik pixelů musí uživatel popojet, aby nav bar reagoval
 
     if (navBar) {
         window.addEventListener('scroll', () => {
