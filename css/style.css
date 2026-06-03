@@ -49,6 +49,8 @@ nav {
     -webkit-backdrop-filter: blur(10px) saturate(180%);
     z-index: 1000;
     border-bottom: 1px solid var(--border);
+    
+    /* Přidána plynulá animace schovávání */
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform;
 }
@@ -60,18 +62,16 @@ nav {
     color: var(--primary);
     text-decoration: none;
     text-transform: uppercase;
-    display: inline-block; /* Důležité pro funkčnost transformace */
+    display: inline-block;
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
-    will-change: transform; /* Optimalizace pro hladký pohyb */
+    will-change: transform;
 }
 
-/* Efekt při najetí: Zvětšení a odsazení nahoru */
 .logo a:hover {
     transform: translateY(-3px) scale(1.05);
-    color: var(--primary-light); /* Volitelně: lehké zesvětlení při hoveru */
+    color: var(--primary-light);
 }
 
-/* Efekt při kliknutí (aktivní stav): Aby se logo nepříjemně nesmršťovalo */
 .logo a:active {
     transform: translateY(-1px) scale(1.04);
     transition: transform 0.1s ease;
@@ -83,52 +83,48 @@ nav {
     gap: 40px; 
 }
 
-/* --- VYLEPŠENÉ ODKAZY V NAVIGACI --- */
+/* --- ODKAZY V NAVIGACI --- */
 .nav-links a {
     text-decoration: none;
     color: var(--text-main);
     font-weight: 600;
     font-size: 0.9rem;
     opacity: 0.7;
-    position: relative; /* Nutné pro umístění podtržítka */
+    position: relative;
     padding: 4px 0;
     transition: color 0.3s ease;
 }
 
-/* Podtržítko (příprava) */
 .nav-links a::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 0; /* Začínáme s nulovou šířkou */
+    width: 0;
     height: 2px;
     background-color: var(--primary);
-    transition: width 0.3s ease; /* Animace šířky zleva doprava */
+    transition: width 0.3s ease;
 }
 
-/* Efekt při najetí (Hover) */
 .nav-links a:hover {
     opacity: 1;
     color: var(--primary);
 }
 
 .nav-links a:hover::after {
-    width: 100%; /* Roztažení podtržítka na celou šířku */
+    width: 100%;
 }
 
-/* --- AKTIVNÍ STRÁNKA (Stav po prokliku) --- */
-/* Tato třída se přidá pomocí JavaScriptu */
 .nav-links a.active {
     opacity: 1;
     color: var(--primary);
 }
 
 .nav-links a.active::after {
-    width: 100%; /* Podtržítko zůstane viditelné */
+    width: 100%;
 }
 
-/* --- UNIVERZÁLNÍ HERO SEKCE (Sjednoceno pro celý web) --- */
+/* --- HERO SEKCE --- */
 .hero-section {
     text-align: center;
     padding: 180px 20px 80px;
@@ -153,7 +149,7 @@ nav {
 }
 
 .hero-section h1 {
-    font-size: clamp(2.5rem, 7vw, 4.2rem); /* Zvětšeno pro Apple look */
+    font-size: clamp(2.5rem, 7vw, 4.2rem);
     letter-spacing: -3px;
     margin-bottom: 25px;
     font-weight: 800;
@@ -271,7 +267,7 @@ nav {
 
 /* --- FOOTER --- */
 .main-footer {
-    background: var(--white); /* Čistě bílá místo šedé vypadá luxusněji */
+    background: var(--white);
     padding: 30px 8% 30px;
     border-top: 1px solid var(--border);
 }
@@ -279,14 +275,14 @@ nav {
 .footer-content {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end; /* Zarovná jméno a linky na stejnou linku */
-    max-width: 1000px; /* Tohle zabrání tomu roztažení do stran */
+    align-items: flex-end;
+    max-width: 1000px;
     margin: 0 auto 25px;
     gap: 30px;
 }
 
 .footer-info h3 { 
-    font-size: 1.3rem; /* Menší, vkusnější */
+    font-size: 1.3rem;
     margin-bottom: 4px; 
     letter-spacing: -0.5px; 
     font-weight: 700;
@@ -312,7 +308,7 @@ nav {
 }
 
 .footer-links a:hover { 
-    opacity: 1;
+    opacity: 1; 
     color: var(--primary); 
 }
 
@@ -353,17 +349,24 @@ nav {
         top: 0;
         right: -100%;
         width: 100%;
-        height: 100vh;
+        height: 0;          /* OPRAVENO: ve výchozím stavu nezabírá žádné místo */
+        opacity: 0;         /* OPRAVENO */
+        overflow: hidden;   /* OPRAVENO */
         background: white;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: 35px;
-        transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         padding: 0;
     }
 
-    .nav-links.active { right: 0; }
+    /* Zde se mobilní menu rozbalí na plnou výšku a zviditelní */
+    .nav-links.active { 
+        right: 0; 
+        height: 100vh;      /* OPRAVENO: rozbalí se až při aktivaci */
+        opacity: 1;         /* OPRAVENO */
+    }
 
     .nav-links a { font-size: 1.5rem; }
 
